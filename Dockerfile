@@ -43,13 +43,24 @@ EXPOSE 8000
 
 # Create startup script
 RUN echo '#!/bin/bash\n\
-if [ -z "$APP_KEY" ]; then\n\
-    php artisan key:generate --force\n\
-fi\n\
+set -e\n\
+\n\
+echo "Clearing cache..."\n\
+php artisan config:clear\n\
+php artisan cache:clear\n\
+\n\
+echo "Building cache..."\n\
 php artisan config:cache\n\
 php artisan route:cache\n\
 php artisan view:cache\n\
+\n\
+echo "Running migrations..."\n\
 php artisan migrate --force\n\
+\n\
+echo "Running seeders..."\n\
+php artisan db:seed --class=CreateAdminUserSeeder --force\n\
+\n\
+echo "Starting server..."\n\
 php artisan serve --host=0.0.0.0 --port=${PORT:-8000}\n\
 ' > /start.sh && chmod +x /start.sh
 
