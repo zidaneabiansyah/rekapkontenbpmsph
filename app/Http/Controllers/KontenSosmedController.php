@@ -26,7 +26,8 @@ class KontenSosmedController extends Controller
             ->orderBy('platform')
             ->pluck('platform');
 
-        $yearOptions = KontenSosmed::selectRaw('YEAR(tanggal_upload) as year')
+        // PostgreSQL compatible query
+        $yearOptions = KontenSosmed::selectRaw('EXTRACT(YEAR FROM tanggal_upload) as year')
             ->distinct()
             ->orderBy('year', 'desc')
             ->pluck('year');

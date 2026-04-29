@@ -58,7 +58,7 @@ echo "Running migrations..."\n\
 php artisan migrate --force\n\
 \n\
 echo "Running seeders..."\n\
-php artisan db:seed --class=CreateAdminUserSeeder --force\n\
+php artisan db:seed --force\n\
 \n\
 echo "Starting server..."\n\
 php artisan serve --host=0.0.0.0 --port=${PORT:-8000}\n\
